@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreKategoriRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -29,10 +30,26 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreKategoriRequest $request)
     {
-        //
+        // 
+        try{
+        $param = $request->validated();
+
+        // model untuk menyimpan data
+        Category::create($param);
+
+        return redirect()
+                ->route('admin.inkategori')
+                ->with('success', 'Data Berhasil di Inputkan');
+        }
+        catch (\Exception $e)
+    {
+        return redirect()
+        ->route('admin.inkategori')
+        ->with('error', $e->getMessage());
     }
+}
 
     /**
      * Display the specified resource.
